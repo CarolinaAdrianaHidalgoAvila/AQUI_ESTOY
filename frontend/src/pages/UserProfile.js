@@ -1,12 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Avatar } from '@mui/material';
 import NavTab from '../components/NavTab';
 
 function UserProfile(props) {
-    const { user, ...rest } = props;
-    const [value, setValue] = useState(0);
+    const { ...rest } = props;
 
-    function handleChange(event, newValue) {
+    const [user, setUser] = useState({})
+    const [value, setValue] = useState(0);
+    //const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        setUser({
+            id: 0,
+            full_name: "Remy Sharp",
+            e_mail: "remyShrp@gmail.com",
+            cellphone_number: "+591 70233452",
+            address: "Av. B entre X y C Nº1234",
+            descritpion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel neque mauris. Aliquam sollicitudin, sem sed tincidunt interdum, dui enim mollis dolor, ultrices fermentum lectus tellus id urna. Proin finibus."
+        });
+        /*
+        fetch("URL_HERE")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            setUser(data);
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        .finally(() => {
+            setIsLoading(false);
+        });
+        */
+    }, []);
+
+    function handleChangeNavTab(event, newValue) {
         setValue(newValue);
     }
     
@@ -15,20 +43,22 @@ function UserProfile(props) {
         <div id='user-profile' className='container m-2'>
             <div className='row align-items-start my-4'>
                 <div className='col col-sm-4'>
-                    <Avatar alt="Remy Sharp" src="https://img.freepik.com/free-photo/pleasant-looking-serious-man-stands-profile-has-confident-expression-wears-casual-white-t-shirt_273609-16959.jpg?w=2000" sx={{ width: 250, height: 250 }}> Remy Sharp </Avatar>
+                    <Avatar alt={user.full_name} src="https://img.freepik.com/free-photo/pleasant-looking-serious-man-stands-profile-has-confident-expression-wears-casual-white-t-shirt_273609-16959.jpg?w=2000" sx={{ width: 250, height: 250 }}> {user.full_name} </Avatar>
                 </div>
-                <div className='col-lg-auto my-auto'>
-                    <h1>Remy Sharp</h1>
-                    <h5>remyShrp@gmail.com</h5>
-                    <h5>+591 70233452</h5>
+                <div className='col-lg-auto my-auto d-flex flex-column p-2'>
+                    <h1 className='display-4'>{user.full_name}</h1>
+                    <h5>{user.e_mail}</h5>
+                    <h5>{user.cellphone_number}</h5>
                 </div>
             </div>
             <div className='my-3'>
-                <NavTab options={["Publicaciones", "Mascotas", "Informacion"]} onChange={handleChange} value={value}/>
+                <NavTab options={["Publicaciones", "Mascotas", "Informacion"]} onChange={handleChangeNavTab} value={value}/>
             </div>
-            {(value === 0) && <p>Aqui las Publicaciones</p>}
-            {(value === 1) && <p>Aqui las Mascotas</p>}
-            {(value === 2) && <p>Aqui las Informacion Detallada</p>}
+            <div className='container'>
+                {(value === 0) && <p>Aqui las Publicaciones</p>}
+                {(value === 1) && <p>Aqui las Mascotas</p>}
+                {(value === 2) && <p>{user.descritpion}</p>}
+            </div>
         </div> 
      );
 }
