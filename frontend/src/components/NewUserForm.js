@@ -17,6 +17,15 @@ function NewUserForm(props) {
     const [address, setAddress] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [eMailValidation, setEMailValidation] = useState(false);
+    const [passwordValidation, setPasswordValidation] = useState(false);
+
+    useEffect(() => {
+        if(eMailValidation || passwordValidation){
+            setOpen(true);
+        }
+    }, [eMailValidation, passwordValidation])
  
     const style = {
         position: 'absolute',
@@ -29,7 +38,28 @@ function NewUserForm(props) {
         p: 4,
     };
 
-    function handleCreateUserSubmit(){
+    function validateEmail(email) {
+        return email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    }
+
+    function handleCreateUserSubmit(event){
+        event.preventDefault();
+        if(!validateEmail(eMail)){
+            setEMailValidation(true);
+            return ;
+        } else {
+            setEMailValidation(false);
+        }
+
+        if(password != confirmPassword) {
+            setPasswordValidation(true);
+            return ;
+        } else { 
+            setPasswordValidation(false);
+        }
+
         setOpen(false);
 
         /*
@@ -80,12 +110,14 @@ function NewUserForm(props) {
                                 </div>
                             </div>
                             <div className='row justify-content-center'>
-                                <TextField id="form-user-email" label="E-Mail" variant="outlined" margin='normal' onChange={(e) => {setEMail(e.target.value)}} required />
+                                <TextField id="form-user-email" label="E-Mail" variant="outlined" margin='normal' onChange={(e) => {setEMail(e.target.value)}} required error={eMailValidation} />
                                 <TextField id="form-user-cellphone" label="Telefono" variant="outlined" type="number" margin='normal' onChange={(e) => {setTelephone(e.target.value)}} />
                                 <TextField id="form-user-direction" label="Direccion" variant="outlined" margin='normal' onChange={(e) => {setAddress(e.target.value)}} />
-                                <TextField id="form-user-password" label="Contraseña" variant="outlined" margin='normal' type="password" onChange={(e) => {setPassword(e.target.value)}} required />
-                                <TextField id="form-user-confirm-password" label="Confirmar Contraseña" variant="outlined" margin='normal' type="password" onChange={(e) => {setConfirmPassword(e.target.value)}} required />
+                                <TextField id="form-user-password" label="Contraseña" variant="outlined" margin='normal' type="password" onChange={(e) => {setPassword(e.target.value)}} required error={passwordValidation} />
+                                <TextField id="form-user-confirm-password" label="Confirmar Contraseña" variant="outlined" margin='normal' type="password" onChange={(e) => {setConfirmPassword(e.target.value)}} required error={passwordValidation}/>
                             </div>
+                            {eMailValidation && <p style={{color: "red"}}> El e-mail introducido no es valido</p>}
+                            {passwordValidation && <p style={{color: "red"}}> Las contraseñas no coinciden</p>}
                             <div className="pt-1 mb-4">
                                 <input type="submit" value="Registrarse" className="btn btn-dark btn-lg btn-block" />
                             </div>
