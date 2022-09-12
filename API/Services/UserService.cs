@@ -13,6 +13,7 @@ namespace AQUI_ESTOY.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
+
         public async Task<UserModel> CreateUserAsync(UserModel user)
         {
             var userEntity = _mapper.Map<UserEntity>(user);
@@ -24,6 +25,26 @@ namespace AQUI_ESTOY.Services
             }
             throw new Exception("Database Error");
         }
+
+        public async Task<IEnumerable<UserModel>> GetAllUsersAsync()
+        {
+            var usersEntityList = await _userRepository.GetAllUsersAsync();
+            var usersModelList = _mapper.Map<IEnumerable<UserModel>>(usersEntityList);
+            return usersModelList;
+        }
+
+        public async Task<UserModel> GetUserAsync(int userId)
+        {
+            var user = await _userRepository.GetUserAsync(userId);
+
+            //if (user == null) Cuando se implementen errores**********
+            //{
+            //    throw new NotFoundElementException($"The player with id:{playerId} does not exists.");
+            //}
+            var userModel = _mapper.Map<UserModel>(user);
+            return userModel;
+        }
+
     }
 
 

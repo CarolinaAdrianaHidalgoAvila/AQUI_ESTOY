@@ -1,16 +1,14 @@
 ﻿using AQUI_ESTOY.Data.Entities;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AQUI_ESTOY.Data
 {
     public class AquiEstoyDBContext : DbContext
     {
-        public DbSet<UserEntity> Users => Set<UserEntity>();
 
-        public AquiEstoyDBContext(DbContextOptions<AquiEstoyDBContext> options) : base(options)
-        {
+        public AquiEstoyDBContext(DbContextOptions<AquiEstoyDBContext> options) : base(options){ }
+        public DbSet<UserEntity> Users { get; set; }
 
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var configuration = new ConfigurationBuilder()
@@ -19,14 +17,14 @@ namespace AQUI_ESTOY.Data
                 .Build();
 
             var connectionString = configuration.GetConnectionString("AquiEstoyDB");
-            optionsBuilder.UseNpgsql(connectionString);
+            optionsBuilder.UseSqlServer(connectionString);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserEntity>().ToTable("User");
             modelBuilder.Entity<UserEntity>().Property(d => d.Id).ValueGeneratedOnAdd();
-
         }
     }
 }
