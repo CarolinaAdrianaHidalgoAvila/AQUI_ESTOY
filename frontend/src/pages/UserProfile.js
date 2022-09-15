@@ -12,11 +12,11 @@ function UserProfile(props) {
     useEffect(() => {
         setUser({
             id: 0,
-            full_name: "Remy Sharp",
+            first_name: "Remy",
+            last_name: "Sharp",
             e_mail: "remyShrp@gmail.com",
             cellphone_number: "+591 70233452",
-            address: "Av. B entre X y C Nº1234",
-            descritpion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel neque mauris. Aliquam sollicitudin, sem sed tincidunt interdum, dui enim mollis dolor, ultrices fermentum lectus tellus id urna. Proin finibus."
+            address: "Av. B entre X y C Nº1234"
         });
         /*
         fetch("URL_HERE")
@@ -40,26 +40,27 @@ function UserProfile(props) {
     
 
     return (
-        <div id='user-profile' className='container m-2'>
-            <div className='row align-items-start my-4'>
-                <div className='col col-sm-4'>
-                    <Avatar alt={user.full_name} src="https://img.freepik.com/free-photo/pleasant-looking-serious-man-stands-profile-has-confident-expression-wears-casual-white-t-shirt_273609-16959.jpg?w=2000" sx={{ width: 250, height: 250 }}> {user.full_name} </Avatar>
+        <>
+            <div id='user-profile' className='container m-2'>
+                <div className='row align-items-start my-4'>
+                    <div className='col col-sm-4'>
+                        <Avatar alt={user.first_name} src="https://img.freepik.com/free-photo/pleasant-looking-serious-man-stands-profile-has-confident-expression-wears-casual-white-t-shirt_273609-16959.jpg?w=2000" sx={{ width: 250, height: 250 }}> {user.full_name} </Avatar>
+                    </div>
+                    <div className='col-lg-auto my-auto d-flex flex-column p-2'>
+                        <h1 className='display-4'>{`${user.first_name} ${user.last_name}`}</h1>
+                        <h5>{user.e_mail}</h5>
+                        <h5>{user.cellphone_number}</h5>
+                    </div>
                 </div>
-                <div className='col-lg-auto my-auto d-flex flex-column p-2'>
-                    <h1 className='display-4'>{user.full_name}</h1>
-                    <h5>{user.e_mail}</h5>
-                    <h5>{user.cellphone_number}</h5>
+                <div className='my-3'>
+                    <NavTab options={["Publicaciones", "Mascotas"]} onChange={handleChangeNavTab} value={value}/>
                 </div>
-            </div>
-            <div className='my-3'>
-                <NavTab options={["Publicaciones", "Mascotas", "Informacion"]} onChange={handleChangeNavTab} value={value}/>
-            </div>
-            <div className='container'>
-                {(value === 0) && <p>Aqui las Publicaciones</p>}
-                {(value === 1) && <p>Aqui las Mascotas</p>}
-                {(value === 2) && <p>{user.descritpion}</p>}
-            </div>
-        </div> 
+                <div className='container'>
+                    {(value === 0) && <p>Aqui las Publicaciones</p>}
+                    {(value === 1) && <p>Aqui las Mascotas</p>}
+                </div>
+            </div> 
+        </>
      );
 }
 
